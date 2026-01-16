@@ -1,12 +1,63 @@
 console.log("connected");
 const csrf = document.querySelector("#csrf").value;
 
+// async function login() {
+//   const user_email = document.querySelector(".user_email").value;
+//   const user_password = document.querySelector(".user_password").value;
+
+//   try {
+//     const response = await fetch("login/", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         "X-CSRFToken": csrf,
+//       },
+//       body: JSON.stringify({
+//         user_email: user_email,
+//         user_password: user_password,
+//       }),
+//     });
+
+//     const data = await response.json();
+//     localStorage.setItem("session_token", data.session_id);
+//     document.querySelector(".login_page").style.display = "none";
+//     document.querySelector(".success").style.display = "flex";
+//   } catch (err) {
+//     alert(err || "Network Error");
+//   }
+// }
+// async function register() {
+//   const user_email = document.querySelector(".user_email").value;
+//   const user_password = document.querySelector(".user_password").value;
+
+//   try {
+//     const response = await fetch("register/", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         "X-CSRFToken": csrf,
+//       },
+//       body: JSON.stringify({
+//         user_email: user_email,
+//         user_password: user_password,
+//       }),
+//     });
+
+//     const data = await response.json();
+//     localStorage.setItem("session_token", data.session_id);
+//     document.querySelector(".login_page").style.display = "none";
+//     document.querySelector(".success").style.display = "flex";
+//   } catch (err) {
+//     alert(err || "Network Error");
+//   }
+// }
+
 async function login() {
   const user_email = document.querySelector(".user_email").value;
   const user_password = document.querySelector(".user_password").value;
 
   try {
-    const response = await fetch("login/", {
+    const response = await fetch("jwt/login/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,7 +70,7 @@ async function login() {
     });
 
     const data = await response.json();
-    localStorage.setItem("session_token", data.session_id);
+    localStorage.setItem("jwt", data.jwt);
     document.querySelector(".login_page").style.display = "none";
     document.querySelector(".success").style.display = "flex";
   } catch (err) {
@@ -31,7 +82,7 @@ async function register() {
   const user_password = document.querySelector(".user_password").value;
 
   try {
-    const response = await fetch("register/", {
+    const response = await fetch("jwt/register/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,10 +95,27 @@ async function register() {
     });
 
     const data = await response.json();
-    localStorage.setItem("session_token", data.session_id);
+    localStorage.setItem("jwt", data.jwt);
+
     document.querySelector(".login_page").style.display = "none";
     document.querySelector(".success").style.display = "flex";
   } catch (err) {
     alert(err || "Network Error");
+  }
+}
+
+async function me() {
+  try {
+    const response = await fetch("jwt/me/", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        "X-CSRFToken": csrf,
+      },
+    });
+    const result = await response.json();
+    console.log(result);
+  } catch (err) {
+    alert("network error");
   }
 }

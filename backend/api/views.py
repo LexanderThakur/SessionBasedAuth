@@ -6,6 +6,9 @@ import uuid
 from .models import Session,User
 
 from django.contrib.auth.hashers import make_password, check_password
+from django.conf import settings
+
+
 def home(request):
     return render(request,"index.html")
 
