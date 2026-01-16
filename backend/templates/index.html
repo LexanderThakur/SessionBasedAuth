@@ -13,6 +13,7 @@
     />
   </head>
   <body>
+    <input type="hidden" id="csrf" value="{{ csrf_token }}" />
     <div class="login_page">
       <h2>Login / Register</h2>
 
@@ -23,7 +24,7 @@
         <br />
         <input
           type="email"
-          class="form-control"
+          class="form-control user_email"
           placeholder="name@example.com"
         />
       </div>
@@ -31,12 +32,26 @@
       <div class="mb-3">
         <label class="form-label">Password</label>
         <br />
-        <input type="text" class="form-control" placeholder="Enter Password" />
+        <input
+          type="text"
+          class="form-control user_password"
+          placeholder="Enter Password"
+        />
       </div>
       <div>
-        <button type="button" class="btn btn-dark button-login">Login</button>
+        <button
+          type="button"
+          class="btn btn-dark button-login"
+          onclick="login()"
+        >
+          Login
+        </button>
 
-        <button type="button" class="btn btn-dark button-register">
+        <button
+          type="button"
+          class="btn btn-dark button-register"
+          onclick="register()"
+        >
           Register
         </button>
       </div>
@@ -45,7 +60,6 @@
       <p>logged in</p>
     </div>
 
-    <input type="hidden" id="csrf" value="{{ csrf_token }}" />
     <script src="static/js/app.js"></script>
   </body>
 </html>

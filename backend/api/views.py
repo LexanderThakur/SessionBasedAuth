@@ -3,7 +3,7 @@ import json
 # Create your views here.
 from django.http import HttpResponse,JsonResponse
 import uuid
-from .import Session,User
+from .models import Session,User
 
 from django.contrib.auth.hashers import make_password, check_password
 def home(request):
@@ -24,15 +24,15 @@ def login(request):
     if not check_password(user_pass,user.user_password):
         return JsonResponse({"message":"wrong password"})
 
-    session=Session.objects.filter(user_email=user_email)
+    session=Session.objects.filter(user_email=user)
     if session:
         session.delete()
         
     
-    session_id= uuid.uuid4()
+    session_id= str(uuid.uuid4())
     session= Session(session_id=session_id,user_email=user)
 
-    session= Session(session_id=session_id,user_email=user)
+    
     session.save()
 
     return JsonResponse({"message":"logged in","session_id":session_id})
@@ -49,11 +49,11 @@ def register(request):
     user= User(user_email=user_email,user_password=hashed_password)
     user.save()
 
-    session_id= uuid.uuid4()
+    session_id= str(uuid.uuid4())
 
     session= Session(session_id=session_id,user_email=user)
     session.save()
-    return JsonResponse({"message":"successfully registered"})
+    return JsonResponse({"message":"successfully registered","session_id":session_id})
 
 
 
